@@ -14,3 +14,5 @@ source .venv/bin/activate #linux/mac
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+### 3. Generar una apikey 
+Crea y obten una apikey en [GroqCloud](https://console.groq.com/) y crea un archivo .env en la raiz del proyecto, usando de ejemplo el .env.example
