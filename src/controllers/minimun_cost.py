@@ -42,31 +42,33 @@ def minimun_cost(offers: list[float], demands: list[float], matriz: list[list[fl
 def print_matriz(values: list[float],offers: list[float], demands: list[float], matriz: list[list[float]], n: int):
     filas = len(matriz)
     columnas = len(matriz[0])
+    text = ""
 
     if filas != 0 and columnas != 0:
-        print(f"\nIteración: {n+1}\n")
+        text += f"\nIteración: {n+1}\n"
         for i in range(columnas):
             code = chr(ord('A') + i)
-            print(f'\t{code}',end="")
-        print("\tOfertas \n")
+            text += f'\t{code}'
+        text += "\tOfertas \n"
 
         for i in range(filas):
             code = chr(ord('A') + i)
-            print(f'{code}\t', end="")
+            text += f'{code}\t'
 
             for j in range(columnas):
-                print(f"{matriz[i][j]}\t",end="")
-            print(f"{offers[i]}\n")
+                text += f"{matriz[i][j]}\t"
+            text += f"{offers[i]}\n"
 
-        print("Dem\t",end="")
+        text += "Dem\t"
         for i in range(columnas):
-            print(f"{demands[i]}\t",end="")
-        print()
+            text += f"{demands[i]}\t"
+        text += "\n"
     else:
-        print("\nValores para obtener el costo minimo: ",end="")
+        text += "Valores para obtener el costo minimo: "
         for i in range(len(values)):
-            print(f"{values[i]}  ",end="")
-        print("\n")
+            text += f"{values[i]}  "
+        text += "\n"
+    print(text)
 
 if __name__ == "__main__":
     matriz = [[5,2,7,3],[3,6,6,1],[6,1,2,4], [4,3,6,6]]
