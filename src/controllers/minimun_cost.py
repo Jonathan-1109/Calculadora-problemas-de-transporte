@@ -1,10 +1,12 @@
 def minimun_cost(offers: list[float], demands: list[float], matriz: list[list[float]]):
     
     values = []
+    cont = 0
     if (sum(offers) != sum(demands)):
         raise ValueError("La oferta total es distinta a la demanda total")
     
     while True:
+        print_matriz(values,offers,demands, matriz, cont)
         if (offers == [] and demands == [0]) or (offers == [0] and demands == []):
             return sum(values)
 
@@ -35,6 +37,36 @@ def minimun_cost(offers: list[float], demands: list[float], matriz: list[list[fl
         elif not offers[x]:
             offers.pop(x)
             matriz.pop(x)
+        cont += 1
+
+def print_matriz(values: list[float],offers: list[float], demands: list[float], matriz: list[list[float]], n: int):
+    filas = len(matriz)
+    columnas = len(matriz[0])
+
+    if filas != 0 and columnas != 0:
+        print(f"\nIteración: {n+1}\n")
+        for i in range(columnas):
+            code = chr(ord('A') + i)
+            print(f'\t{code}',end="")
+        print("\tOfertas \n")
+
+        for i in range(filas):
+            code = chr(ord('A') + i)
+            print(f'{code}\t', end="")
+
+            for j in range(columnas):
+                print(f"{matriz[i][j]}\t",end="")
+            print(f"{offers[i]}\n")
+
+        print("Dem\t",end="")
+        for i in range(columnas):
+            print(f"{demands[i]}\t",end="")
+        print()
+    else:
+        print("\nValores para obtener el costo minimo: ",end="")
+        for i in range(len(values)):
+            print(f"{values[i]}  ",end="")
+        print("\n")
 
 if __name__ == "__main__":
     matriz = [[5,2,7,3],[3,6,6,1],[6,1,2,4], [4,3,6,6]]
