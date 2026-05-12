@@ -1,5 +1,5 @@
 # Calculadora de problemas de transporte (Python)
-Calculadora para los métodos de costo minimo, esquina noroeste y aproximación de vogel, con conexión a la API de groq para generar y obtener una conclusión del ejercicio
+Calculadora con interfaz para los métodos de costo minimo, esquina noroeste y aproximación de vogel, con conexión a la API de groq para generar y obtener una conclusión del ejercicio
 
 ### 1. Clonar repositorio
 ```bash
