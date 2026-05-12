@@ -1,5 +1,11 @@
 def verify(offers: list[float], demands: list[float], matriz: list[list[float]]):
 
+    if (len(offers) != len(demands)):
+        raise ValueError("La cantidad de ofertas es distinta a las demandas")
+    
+    if not all(len(fila) == len(matriz[0]) for fila in matriz):
+        raise ValueError("El tamaño de la matriz es irregular")
+    
     dem_total = sum(demands)
     off_total = sum(offers)
 
