@@ -1,14 +1,30 @@
 import groq
 
-def groq_conclusion(client: groq.Groq, content: str):
+
+def groq_conclusion(client: groq.Groq, content: str, system_prompt: str = "") -> str | None:
+    messages = []
+
+    if system_prompt:
+        messages.append({"role": "system", "content": system_prompt})
+
+    messages.append({"role": "user", "content": content})
 
     try:
         chat_completion = client.chat.completions.create(
-            messages=[{"role": "user","content": content,}],
+            messages=messages,
             model="llama-3.3-70b-versatile",
+            temperature=0.4,
+            max_tokens=600,
+            timeout=10.0,
         )
-        print(chat_completion.choices[0].message.content)
+        return chat_completion.choices[0].message.content
+
     except groq.RateLimitError as e:
-        print("Limite de tokens alcanzado: " + str(e))
+        print(f"[Groq] Límite de tokens alcanzado: {e}")
+        return None
+    except groq.APIConnectionError as e:
+        print(f"[Groq] Error de conexión: {e}")
+        return None
     except Exception as e:
-        print(e)
+        print(f"[Groq] Error inesperado: {e}")
+        return None
