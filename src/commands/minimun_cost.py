@@ -22,12 +22,12 @@ class minimun_cost(transport):
                         
                     if self.matriz[i][j] < minimun:
                         minimun = self.matriz[i][j]
-                        x = i
-                        y = j
+                        y = i
+                        x = j
 
-            min_of_dem = self.demands[y] if self.demands[y] < self.offers[x] else self.offers[x]
-            self.demands[y] = self.demands[y] - min_of_dem
-            self.offers[x] = self.offers[x] - min_of_dem
+            min_of_dem = self.demands[x] if self.demands[x] < self.offers[y] else self.offers[y]
+            self.demands[x] = self.demands[x] - min_of_dem
+            self.offers[y] = self.offers[y] - min_of_dem
             self.values.append(min_of_dem*minimun)
 
             if (self.demands == [0] and self.offers == [0]):
@@ -37,16 +37,17 @@ class minimun_cost(transport):
                 print(text)
 
                 self.result = sum(self.values)
+                print("\nEl costo minimo es: " + str(self.result) + "\n")
                 return
             
-            if not self.demands[y]:
-                self.demands.pop(y)
+            if not self.demands[x]:
+                self.demands.pop(x)
                 for i in range(len(self.matriz)):
-                    self.matriz[i].pop(y)
+                    self.matriz[i].pop(x)
 
-            elif not self.offers[x]:
-                self.offers.pop(x)
-                self.matriz.pop(x)
+            elif not self.offers[y]:
+                self.offers.pop(y)
+                self.matriz.pop(y)
             cont += 1
 
     def groq_promt(self):
