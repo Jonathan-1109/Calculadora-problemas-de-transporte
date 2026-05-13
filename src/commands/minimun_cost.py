@@ -4,14 +4,12 @@ from .groq_conclusion import groq_conclusion
 class minimun_cost(transport):
 
     def __init__(self, matriz, offers, demands):
-        super().__init__()
-        self.create(matriz, offers, demands)
+        super().__init__(matriz, offers, demands)
         
     def resolve_minimun_cost(self):
         cont = 0
         
         while True:
-            self.print_matriz(cont)
 
             minimun = self.matriz[0][0] 
             x = 0
@@ -26,9 +24,11 @@ class minimun_cost(transport):
                         x = j
 
             min_of_dem = self.demands[x] if self.demands[x] < self.offers[y] else self.offers[y]
+            self.print_matriz(min_of_dem, minimun, cont)
+            self.values.append(min_of_dem*minimun)
+
             self.demands[x] = self.demands[x] - min_of_dem
             self.offers[y] = self.offers[y] - min_of_dem
-            self.values.append(min_of_dem*minimun)
 
             if (self.demands == [0] and self.offers == [0]):
                 text = "\nValores para obtener el costo minimo: "

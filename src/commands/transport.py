@@ -4,21 +4,10 @@ from .verify import verify
 
 class transport:
 
-    def __init__(self):
+    def __init__(self, matriz, offers, demands):
         groqKey = getenv("GROQ_API_KEY","groqKey")
         self.client = Groq(api_key=groqKey)
 
-        self.matriz = [[]]
-        self.offers = []
-        self.demands = []
-        self.clone_matriz = [[]] #Clones para el promt xd
-        self.clone_offers = []
-        self.clone_demands = []
-
-        self.values = []
-        self.result = 0
-
-    def create(self, matriz, offers, demands): #Aqui seria que agerre los datos de la interfaz
         self.matriz = matriz
         self.offers = offers
         self.demands = demands
@@ -27,7 +16,10 @@ class transport:
         self.clone_demands = demands[:]
         verify(self.offers, self.demands, self.matriz)
 
-    def print_matriz(self, n:int):
+        self.values = []
+        self.result = 0
+
+    def print_matriz(self, value1:float, value2: float,n:int):
         filas = len(self.matriz)
         columnas = len(self.matriz[0])
 
@@ -48,6 +40,7 @@ class transport:
         text += "Dem\t"
         for i in range(columnas):
             text += f"{self.demands[i]}\t"
+        text += f"\nValores a multiplicar: {value1} * {value2}"
         print(text)
 
     def groq_promt(self):

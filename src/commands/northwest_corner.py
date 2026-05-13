@@ -4,8 +4,7 @@ from .groq_conclusion import groq_conclusion
 class nortwest_corner(transport):
 
     def __init__(self, matriz, offers, demands):
-        super().__init__()
-        self.create(matriz, offers, demands)
+        super().__init__(matriz, offers, demands)
 
     def resolve_nortwest(self):
         cont = 0
@@ -13,12 +12,15 @@ class nortwest_corner(transport):
 
             if not (self.offers and self.demands):
                 self.result = sum(self.values)
-                print(f"El resultado por esquina noroeste es: {self.result}")
+                text = "\nValores para obtener el resultado de esquina noroeste: "
+                for i in range(len(self.values)):
+                    text += f"{self.values[i]}  "
+                print(text)
+                print(f"\nEl resultado por esquina noroeste es: {self.result}\n")
                 return
             
-            self.print_matriz(cont)
-  
             min_of_dem = self.offers[0] if self.offers[0] < self.demands[0] else self.demands[0]
+            self.print_matriz(min_of_dem, self.matriz[0][0], cont)
             self.values.append(min_of_dem*self.matriz[0][0])
             self.offers[0] = self.offers[0] - min_of_dem
             self.demands[0] =  self.demands[0] - min_of_dem
