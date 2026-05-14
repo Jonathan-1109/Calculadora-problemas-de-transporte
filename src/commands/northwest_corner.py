@@ -1,12 +1,6 @@
 from .transport import transport
 from .groq_conclusion import groq_conclusion
 
-
-SYSTEM_PROMPT = """Eres un asistente académico especializado en Investigación de Operaciones, 
-específicamente en problemas de transporte y logística. Tu rol es analizar resultados 
-de métodos de transporte y generar conclusiones académicas claras, precisas y en español."""
-
-
 class nortwest_corner(transport):
 
     def __init__(self, matriz, offers, demands):
@@ -70,7 +64,7 @@ Por favor, estructura tu respuesta con estas secciones (máximo 200 palabras en 
 4. **Comparativa**: Menciona brevemente que métodos como Costo Mínimo o Aproximación de Vogel suelen dar un mejor punto de partida."""
 
         print("\nGenerando conclusión con IA...")
-        conclusion = groq_conclusion(self.client, user_content, SYSTEM_PROMPT)
+        conclusion = groq_conclusion(self.client, user_content)
 
         if conclusion:
             print("\nConclusión:\n")

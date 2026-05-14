@@ -1,11 +1,13 @@
 import groq
 
+SYSTEM_PROMPT = """Eres un asistente académico especializado en Investigación de Operaciones, 
+específicamente en problemas de transporte y logística. Tu rol es analizar resultados 
+de métodos de transporte y generar conclusiones académicas claras, precisas y en español."""
 
-def groq_conclusion(client: groq.Groq, content: str, system_prompt: str = "") -> str | None:
+def groq_conclusion(client: groq.Groq, content: str) -> str | None:
     messages = []
 
-    if system_prompt:
-        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "system", "content": SYSTEM_PROMPT})
 
     messages.append({"role": "user", "content": content})
 

@@ -20,14 +20,14 @@ if __name__ == "__main__":
         print("="*40)
         t = minimun_cost(copy.deepcopy(matriz), offers[:], demands[:])
         t.resolve_minimun_cost()
-        t.groq_promt()
+        #t.groq_promt()
 
         print("\n" + "="*40)
         print("  MÉTODO DE LA ESQUINA NOROESTE")
         print("="*40)
         t2 = nortwest_corner(copy.deepcopy(matriz), offers[:], demands[:])
         t2.resolve_nortwest()
-        t2.groq_promt()
+        #t2.groq_promt()
 
         print("\n" + "="*40)
         print("  MÉTODO DE APROXIMACIÓN DE VOGEL")
@@ -39,4 +39,4 @@ if __name__ == "__main__":
     except ValueError as ve:
         print(f"[Error de validación] {ve}")
     except Exception as e:
-        print(f"[Error inesperado] {e}")
+        print(f"[Error inesperado] {e}")
