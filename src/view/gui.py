@@ -1,5 +1,6 @@
 import sys
 import copy
+from tkinter import PhotoImage
 import customtkinter as ctk
 from src.commands.minimun_cost import minimun_cost
 from src.commands.northwest_corner import nortwest_corner
@@ -39,9 +40,17 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("Calculadora de Problemas de Transporte")
-        self.geometry("1200x850")
+        img = PhotoImage(file="./src/images/logo.png")
+        self.wm_iconphoto(False, img)
+        width = self.winfo_screenwidth()
+        height = self.winfo_screenheight()
+        vent_width = 1100
+        vent_height = 850
+        x = (width // 2) - (vent_width // 2)
+        y = (height // 2) - (vent_height // 2)
+        self.geometry(f"{vent_width}x{vent_height}+{x}+{y}")
+
         self.configure(fg_color=BG_COLOR)
-        self.eval('tk::PlaceWindow . center')
 
         self.matrix_entries = []
         self.offer_entries = []
