@@ -44,7 +44,7 @@ class minimun_cost(transport):
                 for i in range(len(self.matriz)):
                     self.matriz[i].pop(x)
 
-            elif not self.offers[y]:
+            if not self.offers[y]:
                 self.offers.pop(y)
                 self.matriz.pop(y)
             cont += 1
@@ -85,4 +85,4 @@ Por favor, estructura tu respuesta con estas secciones (máximo 200 palabras en 
         else:
             print("\nNo se pudo obtener conclusión de la IA.")
 
-        self.save_result_to_txt("Costo_Minimo", conclusion)
+        return conclusion

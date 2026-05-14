@@ -72,4 +72,4 @@ Por favor, estructura tu respuesta con estas secciones (máximo 200 palabras en 
         else:
             print("\nNo se pudo obtener conclusión de la IA.")
 
-        self.save_result_to_txt("Esquina_Noroeste", conclusion)
+        return conclusion

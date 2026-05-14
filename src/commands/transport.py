@@ -4,7 +4,6 @@ from os import getenv
 from groq import Groq
 from .verify import verify
 
-
 class transport:
 
     def __init__(self, matriz, offers, demands):
@@ -91,7 +90,7 @@ class transport:
             "",
             "CONCLUSIÓN (generada por IA - Groq / llama-3.3-70b-versatile)",
             "-" * 40,
-            conclusion if conclusion else "[Sin conclusión — verifica tu GROQ_API_KEY]",
+            conclusion if conclusion else "[Sin conclusión]",
             "",
             sep,
         ]

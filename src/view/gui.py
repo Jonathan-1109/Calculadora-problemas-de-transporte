@@ -20,7 +20,6 @@ FONT_SUBTITLE = ("Roboto", 16, "bold")
 FONT_BODY = ("Roboto", 14)
 FONT_CONSOLE = ("Consolas", 13)
 
-
 class RedirectText:
     def __init__(self, text_widget):
         self.text_widget = text_widget
@@ -40,16 +39,34 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("Calculadora de Problemas de Transporte")
-        self.geometry("1000x850")
+        self.geometry("1200x850")
         self.configure(fg_color=BG_COLOR)
         self.eval('tk::PlaceWindow . center')
 
         self.matrix_entries = []
         self.offer_entries = []
         self.demand_entries = []
+        self.validate = (self.register(self.validate_digit), "%P")
+        self.validateFloat = (self.register(self.validate_float), "%P")
+
+        self.check_var = ctk.IntVar(value=False)
 
         self.setup_ui()
 
+    def validate_digit(self, text: str):
+        if text.isdigit() or text == "":
+            return True
+        return False
+    
+    def validate_float(self, text: str):
+        if text == "":
+            return True
+        try:
+            float(text)
+            return True
+        except ValueError:
+            return False
+    
     def setup_ui(self):
         self.main_container = ctk.CTkFrame(self, fg_color="transparent")
         self.main_container.pack(fill="both", expand=True, padx=40, pady=30)
@@ -69,11 +86,11 @@ class App(ctk.CTk):
         top_inner.pack(pady=15, padx=20, anchor="w")
 
         ctk.CTkLabel(top_inner, text="Orígenes (Filas):", font=FONT_BODY).grid(row=0, column=0, padx=(0, 10))
-        self.rows_entry = ctk.CTkEntry(top_inner, width=80, fg_color=INPUT_BG, border_width=1, font=FONT_BODY)
+        self.rows_entry = ctk.CTkEntry(top_inner, width=80, fg_color=INPUT_BG, border_width=1, font=FONT_BODY, validate='key', validatecommand=self.validate)
         self.rows_entry.grid(row=0, column=1, padx=(0, 30))
 
         ctk.CTkLabel(top_inner, text="Destinos (Columnas):", font=FONT_BODY).grid(row=0, column=2, padx=(0, 10))
-        self.cols_entry = ctk.CTkEntry(top_inner, width=80, fg_color=INPUT_BG, border_width=1, font=FONT_BODY)
+        self.cols_entry = ctk.CTkEntry(top_inner, width=80, fg_color=INPUT_BG, border_width=1, font=FONT_BODY, validate='key', validatecommand=self.validate)
         self.cols_entry.grid(row=0, column=3, padx=(0, 30))
 
         self.btn_generate = ctk.CTkButton(
@@ -85,7 +102,11 @@ class App(ctk.CTk):
             corner_radius=8,
             command=self.generate_matrix
         )
-        self.btn_generate.grid(row=0, column=4, padx=(10, 0))
+        self.btn_generate.grid(row=0, column=4, padx=(10, 30))
+
+        ctk.CTkLabel(top_inner, text="Crear conclusión (Groq):", font=FONT_BODY).grid(row=0, column=5, padx=(0, 10))
+        self.checkbox = ctk.CTkCheckBox(top_inner, text="", variable=self.check_var, onvalue=True, offvalue=False)
+        self.checkbox.grid(row=0, column=6)
 
         self.matrix_wrapper = ctk.CTkFrame(self.main_container, fg_color=FRAME_COLOR, corner_radius=12)
         self.matrix_wrapper.pack(fill="both", expand=True, pady=(0, 20))
@@ -157,9 +178,11 @@ class App(ctk.CTk):
             rows = int(self.rows_entry.get())
             cols = int(self.cols_entry.get())
             if rows <= 0 or cols <= 0:
-                raise ValueError
-        except ValueError:
-            print("[Error]: Por favor ingresa números enteros mayores a 0 para filas y columnas.")
+                raise ValueError("Por favor ingresa números enteros mayores a 0 para filas y columnas.")
+            if rows >= 9 or cols >= 9:
+                raise ValueError("No genere matrices de un tamaño mayor a 8x8")
+        except ValueError as ve:
+            print(ve)
             return
 
         for widget in self.matrix_frame.winfo_children():
@@ -178,18 +201,18 @@ class App(ctk.CTk):
             
             row_entries = []
             for j in range(cols):
-                entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=INPUT_BG, border_width=1)
+                entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=INPUT_BG, border_width=1,validate='key', validatecommand=self.validateFloat)
                 entry.grid(row=i+1, column=j+1, padx=4, pady=4)
                 row_entries.append(entry)
             self.matrix_entries.append(row_entries)
 
-            offer_entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=OFFER_BG, border_color="#3B82F6", border_width=1)
+            offer_entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=OFFER_BG, border_color="#3B82F6", border_width=1,validate='key', validatecommand=self.validateFloat)
             offer_entry.grid(row=i+1, column=cols+1, padx=15, pady=4)
             self.offer_entries.append(offer_entry)
 
         ctk.CTkLabel(self.matrix_frame, text="DEMANDA", font=("Roboto", 13, "bold"), text_color="#F87171").grid(row=rows+1, column=0, padx=8, pady=15)
         for j in range(cols):
-            demand_entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=DEMAND_BG, border_color="#EF4444", border_width=1)
+            demand_entry = ctk.CTkEntry(self.matrix_frame, width=65, height=35, justify="center", font=FONT_BODY, fg_color=DEMAND_BG, border_color="#EF4444", border_width=1,validate='key', validatecommand=self.validateFloat)
             demand_entry.grid(row=rows+1, column=j+1, padx=4, pady=15)
             self.demand_entries.append(demand_entry)
 
@@ -216,20 +239,24 @@ class App(ctk.CTk):
         print(f"--- EJECUTANDO MÉTODO: {method.upper()} ---\n")
 
         try:
-            if method == "Costo Mínimo":
-                t = minimun_cost(copy.deepcopy(matriz), offers[:], demands[:])
-                t.resolve_minimun_cost()
-                t.groq_promt()
+            match method:
+                case "Costo Mínimo":
+                    t = minimun_cost(copy.deepcopy(matriz), offers[:], demands[:])
+                    t.resolve_minimun_cost()
+                    conclusion = t.groq_promt() if self.check_var.get() else ""
+                    t.save_result_to_txt("Costo_Minimo", conclusion)
 
-            elif method == "Esquina Noroeste":
-                t = nortwest_corner(copy.deepcopy(matriz), offers[:], demands[:])
-                t.resolve_nortwest()
-                t.groq_promt()
+                case "Esquina Noroeste":
+                    t = nortwest_corner(copy.deepcopy(matriz), offers[:], demands[:])
+                    t.resolve_nortwest()
+                    conclusion = t.groq_promt() if self.check_var.get() else ""
+                    t.save_result_to_txt("Esquina_Noroeste", conclusion)
 
-            elif method == "Aproximación de Vogel":
-                t = vogel_approximation(copy.deepcopy(matriz), offers[:], demands[:])
-                t.resolve_vogel()
-                t.groq_promt()
+                case "Aproximación de Vogel":
+                    t = vogel_approximation(copy.deepcopy(matriz), offers[:], demands[:])
+                    t.resolve_vogel()
+                    conclusion = t.groq_promt() if self.check_var.get() else ""
+                    t.save_result_to_txt("Aproximación de vogel", conclusion)
 
         except ValueError as ve:
             print(f"[Error de validación]: {ve}")

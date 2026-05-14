@@ -1,7 +1,5 @@
 def verify(offers: list[float], demands: list[float], matriz: list[list[float]]):
 
-    if (len(offers) != len(demands)):
-        raise ValueError("La cantidad de ofertas es distinta a las demandas")
     
     if (len(matriz[0]) != len(demands) or len(matriz) != len(offers)):
         raise ValueError("El tamaño de la matriz de datos es distinto al tamaño de ofertas o demandas")

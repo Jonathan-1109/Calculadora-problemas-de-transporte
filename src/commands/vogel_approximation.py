@@ -77,7 +77,7 @@ class vogel_approximation(transport):
                 self.demands.pop(x)
                 for i in range(len(self.matriz)):
                     self.matriz[i].pop(x)
-            elif not self.offers[y]:
+            if not self.offers[y]:
                 self.offers.pop(y)
                 self.matriz.pop(y)
                 
@@ -131,4 +131,4 @@ Por favor, estructura tu respuesta con estas secciones (máximo 200 palabras en 
         else:
             print("\nNo se pudo obtener conclusión de la IA.")
 
-        self.save_result_to_txt("Aproximacion_Vogel", conclusion)
+        return conclusion
