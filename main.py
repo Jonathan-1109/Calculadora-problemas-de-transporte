@@ -15,7 +15,7 @@ if __name__ == "__main__":
         offers  = [80, 30, 60, 45]
         demands = [70, 40, 70, 35]
 
-        print("="*40)
+        """print("="*40)
         print("  MÉTODO DE COSTO MÍNIMO")
         print("="*40)
         t = minimun_cost(copy.deepcopy(matriz), offers[:], demands[:])
@@ -27,7 +27,7 @@ if __name__ == "__main__":
         print("="*40)
         t2 = nortwest_corner(copy.deepcopy(matriz), offers[:], demands[:])
         t2.resolve_nortwest()
-        #t2.groq_promt()
+        t2.groq_promt()"""
 
         print("\n" + "="*40)
         print("  MÉTODO DE APROXIMACIÓN DE VOGEL")

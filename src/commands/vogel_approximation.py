@@ -57,7 +57,7 @@ class vogel_approximation(transport):
                     break
 
             min_of_dem = self.demands[x] if self.demands[x] < self.offers[y] else self.offers[y]
-            self.print_matriz(min_of_dem, minimun, cont)
+            self.print_matriz(min_of_dem, minimun, cont, row_penalties, col_penalties)
             self.values.append(min_of_dem * minimun)
 
             self.demands[x] = self.demands[x] - min_of_dem
@@ -82,6 +82,18 @@ class vogel_approximation(transport):
                 self.matriz.pop(y)
                 
             cont += 1
+
+    def print_matriz(self, value1, value2, n, row_penalties, colt_penalties):
+        super().print_matriz(value1, value2, n)
+        text = f"\nPenalizaciones de la fila: "
+        for value in row_penalties:
+            text += f"{value} "
+        text += f"\nPenalizaciones de la columna: "
+        for value in colt_penalties:
+            text += f"{value} "
+        print(text)
+        self.log_iteraciones.append(text)
+
 
     def groq_promt(self):
         suma_ofertas = sum(self.clone_offers)
