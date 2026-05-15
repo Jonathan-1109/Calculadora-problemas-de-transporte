@@ -10,7 +10,6 @@ class vogel_approximation(transport):
         cont = 0
 
         while True:
-            # Calcular penalizaciones de filas
             row_penalties = []
             for row in self.matriz:
                 if len(row) >= 2:
@@ -21,7 +20,6 @@ class vogel_approximation(transport):
                 else:
                     row_penalties.append(-1)
 
-            # Calcular penalizaciones de columnas
             col_penalties = []
             if len(self.matriz) > 0:
                 for j in range(len(self.matriz[0])):
@@ -36,12 +34,11 @@ class vogel_approximation(transport):
             else:
                 col_penalties = []
 
-            # Encontrar la penalización máxima
             max_row_pen = max(row_penalties) if row_penalties else -1
             max_col_pen = max(col_penalties) if col_penalties else -1
 
-            y = -1 # índice de fila
-            x = -1 # índice de columna
+            y = -1 
+            x = -1 
 
             if max_row_pen >= max_col_pen and max_row_pen != -1:
                 y = row_penalties.index(max_row_pen)
